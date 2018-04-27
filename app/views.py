@@ -27,10 +27,10 @@ def upload():
         desc = pform.description.data
         photo = pform.photo.data
         photoname = secure_filename(photo.filename)
-        print photoname
         photo.save(os.path.join(app.config['UPLOAD_FOLDER'], photoname))
         return jsonify({"message": "File Upload Successful","filename": photoname,"description": desc})
     
+   
     errors= form_errors(pform)
     return jsonify({'errors': errors})
     

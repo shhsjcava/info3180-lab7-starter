@@ -46,7 +46,19 @@ const Home = Vue.component('home', {
    
 const Form = Vue.component('upload-form', {
    template: `
-   <div class="form-group">
+   <div>
+   <div v-if ="msgs">
+   <p class="alert alert-success" >
+    {{msgs}}
+   </p>
+   </div>
+   <div v-if="errors">
+   <p v-for ="err in errors" class="alert alert-danger">
+    {{err}}
+    </p>
+   </div>
+
+    <div class="form-group">
     <form method="POST" enctype="multipart/form-data" @submit.prevent="uploadPhoto" id="uploadForm">
     <label for="description">Description:</label>
     <textarea class="form-control" rows="4" name="description"></textarea>
@@ -56,12 +68,15 @@ const Form = Vue.component('upload-form', {
     <br><br>
    
     
-    <button class="btn btn-primary mb-2" @click="somefunction">Submit</button>
+    <button class="btn btn-primary mb-2" >Submit</button>
     </form>
+    </div>
     </div>
    `,
     data: function() {
        return {
+           msgs:"",
+           errors:[]
        };
     },
     methods: {
@@ -82,6 +97,8 @@ const Form = Vue.component('upload-form', {
             })
             .then(function (jsonResponse) {
                 console.log(jsonResponse);
+                self.msgs = jsonResponse.message;
+                self.errors = jsonResponse.errors;
             })
             .catch(function (error) {
                 console.log(error);
